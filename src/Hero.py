@@ -1,106 +1,72 @@
 # src/Hero.py
 """
-Classe Hero - Personnage principal avec système de niveaux et XP
-Hérite de Personnage pour les mécaniques de combat de base.
-Respecte strictement l'architecture du diagramme de classes fourni.
+Classe Hero - Personnage joueur avec système XP/niveaux.
+Hérite de Personnage (vie, combat, arme/armure).
+Compatible tests pytest + documentation officielle.
 """
 
-from src.Personnage import Personnage
+from .Personnage import Personnage
 import random
 import math
 
 
 class Hero(Personnage):
     """
-    Représente le héros principal du jeu RPG.
+    Représente le héros principal (joueur).
     
-    Héritage:
-        - Personnage (vie, force, attaques, etc.)
+    Constructeur (doc officielle):
+        Hero(nom: str, vie_max: int, force: int, arme: int=0, armure: int=0)
     
     Attributs spécifiques:
-        - niveau (int) : niveau actuel, commence à 1
-        - exp (int)    : expérience cumulée
+        - niveau: int = 1
+        - exp: int = 0 (cumulatif)
     
-    Méthodes principales:
-        - exp_pour_prochain_niveau() : formule 100*n² + 100*n
-        - monter_niveau() : boost stats +1-10%, vie restaurée
-        - gagner_exp() : XP cumulatif avec montées multiples
+    Inherited: nom, vie_max, vie, force, arme, armure
     """
     
-    def __init__(self, nom: str, vie_max: int, force: int):
+    def __init__(self, nom: str, vie_max: int, force: int, arme: int = 0, armure: int = 0):
         """
-        Initialise le héros avec stats de base + système de niveau.
-        
-        Args:
-            nom (str): Nom du héros
-            vie_max (int): Vie maximum initiale
-            force (int): Force initiale
+        Initialise héros avec stats + système niveaux.
         """
-        super().__init__(nom, vie_max, force)
+        super().__init__(nom, vie_max, force, arme, armure)
         self.niveau = 1
         self.exp = 0
 
     @staticmethod
     def uniform(a: float, b: float) -> float:
         """
-        Génère un float aléatoire entre a et b (pour boosts de niveau).
-        
-        NOTE: Méthode dédiée pour faciliter monkeypatch dans les tests.
+        Aléatoire pour tests (monkeypatch-able).
         """
         return random.uniform(a, b)
 
     def exp_pour_prochain_niveau(self) -> int:
         """
-        Calcule l'XP nécessaire pour le niveau suivant.
-        
-        Formule exacte (validée par tests):
-            100 * niveau² + 100 * niveau
-            
-        Exemples:
-            - Niv. 1 → 200 XP
-            - Niv. 2 → 600 XP  
-            - Niv. 3 → 1200 XP
-        
-        Returns:
-            int: XP seuil pour prochain niveau
+        Formule officielle: 100 * niveau^2 + 100 * niveau
+        Ex: niv1=200, niv2=600, niv3=1200
         """
         n = self.niveau
         return 100 * n * n + 100 * n
 
-    def monter_niveau(self):
+    def monter_niveau(self) -> None:
         """
-        Passe au niveau suivant :
-        1. niveau += 1
-        2. Boost vie_max et force : +1% à +10% (arrondi ceil)
-        3. Restaure vie = vie_max complète
-        
-        Exemple (monkeypatch uniform=0.01):
-            vie_max=100 → 101
-            force=50 → 51
-            vie=vie_max
+        Monte niveau + boost aléatoire 1-10% (ceil).
+        Réinitialise vie = vie_max.
+        Effets de bord (modifie état interne).
         """
         self.niveau += 1
-        boost = 1 + self.uniform(0.01, 0.1)  # 1.01 à 1.10
+        boost = 1 + self.uniform(0.01, 0.1)  # +1% à +10%
         self.vie_max = math.ceil(self.vie_max * boost)
         self.force = math.ceil(self.force * boost)
-        self.vie = self.vie_max  # vie entièrement restaurée
+        self.vie = self.vie_max  # Doc officielle: vie réinitialisée
 
-    def gagner_exp(self, quantite: int):
+    def gagner_exp(self, exp: int) -> None:
         """
-        Ajoute de l'XP et monte les niveaux en chaîne si nécessaire.
-        
-        Logique:
-        - Ignore quantite <= 0
-        - exp += quantite (cumulatif)
-        - while exp >= seuil: monter_niveau()
-        
-        Cas multiples niveaux: boucle while gère tout (ex: 5000 XP)
-        
-        Args:
-            quantite (int): XP à gagner
+        XP cumulatif + montées multiples.
+        Continue tant que exp >= prochain_seuil.
+        Ignore exp <= 0.
         """
-        if quantite <= 0:
+        if exp <= 0:
             return
-        self.exp += quantite
+        self.exp += exp  # Cumulatif (non consommé)
         while self.exp >= self.exp_pour_prochain_niveau():
             self.monter_niveau()
