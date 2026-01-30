@@ -5,7 +5,7 @@ Hérite de Personnage pour les mécaniques de combat de base.
 Respecte strictement l'architecture du diagramme de classes fourni.
 """
 
-from Personnage import Personnage
+from src.Personnage import Personnage
 import random
 import math
 
