@@ -23,6 +23,16 @@ class Personnage:
         """
         return self.vie > 0
 
+    def subir_degats(self, valeur: int) -> int:
+        # On ignore les valeurs négatives ou nulles
+        if valeur <= 0:
+            return 0
+            
+        vie_avant = self.vie
+        self.vie -= valeur
+        
+        # On ne descend pas sous 0
+        if self.vie < 0:
             self.vie = 0
             
         # CORRECTION : On retourne ce qu'on a vraiment perdu

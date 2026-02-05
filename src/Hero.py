@@ -10,6 +10,8 @@ import random
 import math
 
 
+uniform = random.uniform
+
 class Hero(Personnage):
     """
     Représente le héros principal (joueur).
@@ -37,7 +39,7 @@ class Hero(Personnage):
         """
         Aléatoire pour tests (monkeypatch-able).
         """
-        return random.uniform(a, b)
+        return uniform(a, b)
 
     def exp_pour_prochain_niveau(self) -> int:
         """
@@ -48,16 +50,14 @@ class Hero(Personnage):
         return 100 * n * n + 100 * n
 
     def monter_niveau(self) -> None:
-        """
-        Monte niveau + boost aléatoire 1-10% (ceil).
-        Réinitialise vie = vie_max.
-        Effets de bord (modifie état interne).
-        """
         self.niveau += 1
-        boost = 1 + self.uniform(0.01, 0.1)  # +1% à +10%
+        pct_boost = self.uniform(1, 10) / 100
+        boost = 1 + pct_boost
+        
         self.vie_max = math.ceil(self.vie_max * boost)
         self.force = math.ceil(self.force * boost)
-        self.vie = self.vie_max  # Doc officielle: vie réinitialisée
+        self.vie = self.vie_max
+
 
     def gagner_exp(self, exp: int) -> None:
         """
