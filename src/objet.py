@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Personnage import Personnage
+from src.Personnage import Personnage
 
 class Objet(ABC):
     """
