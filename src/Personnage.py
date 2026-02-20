@@ -1,6 +1,7 @@
 from random import uniform
+from abc import ABC, abstractmethod
 
-class Personnage:
+class Personnage(ABC):
     """
     Classe de base représentant un combattant dans le jeu.
     """
@@ -16,6 +17,7 @@ class Personnage:
         self.force = force
         self.arme = arme
         self.armure = armure
+        self.estvivant = True
 
     def est_vivant(self) -> bool:
         """
@@ -23,21 +25,17 @@ class Personnage:
         """
         return self.vie > 0
 
-    def subir_degats(self, valeur: int) -> int:
-        # On ignore les valeurs négatives ou nulles
-        if valeur <= 0:
-            return 0
-            
-        vie_avant = self.vie
+    def subir_degats(self, valeur: int):
+        """
+        Applique des dégâts à ce Personnage (diagramme: subirDegats(valeur: int)).
+        Gère la mort (vie <=0 -> estvivant=False).
+        :param valeur: Quantité de dégâts à subir (int >0)
+        Exemple: bombe.utiliser(self) appelle ça avec degats.
+        """
         self.vie -= valeur
-        
-        # On ne descend pas sous 0
-        if self.vie < 0:
-            self.vie = 0
-            
-        # CORRECTION : On retourne ce qu'on a vraiment perdu
-        return vie_avant - self.vie
-
+        if self.vie <= 0:
+            self.vie = 0  # Pas de vie négative
+            self.estvivant = False  # Déclenche fin de combat?
 
     def calcul_degats_sur(self, cible) -> int:
         """
@@ -49,13 +47,27 @@ class Personnage:
         # CORRECTION 2 : Utilisation de round() pour arrondir au lieu de tronquer
         return int(round(max(0, degats)))
 
-    def attaquer(self, cible) -> int:
+    def attaquer(self, cible) :
         """
         Effectue une attaque complète sur une cible.
         """
-        # CORRECTION 3 : Vérifier que tout le monde est vivant avant d'attaquer
-        if not self.est_vivant() or not cible.est_vivant():
-            return 0
-            
-        degats = self.calcul_degats_sur(cible)
-        return cible.subir_degats(degats)
+        if not self.estvivant:
+            return
+        degats = self.calcul_degats_sur_cible(cible)
+        cible.subir_degats(degats)
+
+    def soigner(self, valeur: int):
+        """
+        Restaure de la vie sur ce Personnage (diagramme: soigner(valeur: int)).
+        Ne dépasse pas viemax (cap à vieMax).
+        :param valeur: Quantité de PV à ajouter (int >0)
+        Exemple: PotionSoin.utiliser(self) appelle ça.
+        Cas limite: si vie == viemax, aucun effet (silencieux).
+        """
+        self.vie += valeur
+        if self.vie > self.viemax:
+            self.vie = self.viemax  # Overflow protection
+    
+    @abstractmethod
+    def donner_recompenses(self, hero: 'Hero'):
+        pass  # Implémenté dans Hero/Ennemi
