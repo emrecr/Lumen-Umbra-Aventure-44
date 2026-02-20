@@ -66,7 +66,7 @@ class Personnage(ABC):
         """
         self.vie += valeur
         if self.vie > self.viemax:
-            self.vie = self.viemax  # Overflow protection
+            self.vie = self.viemax  
     
     @abstractmethod
     def donner_recompenses(self, hero: 'Hero'):
