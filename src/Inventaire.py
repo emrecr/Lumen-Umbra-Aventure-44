@@ -1,5 +1,5 @@
 from typing import Dict, List
-from src.Objet import Objet, Consommable
+from src.objet import Objet, Consommable
 from src.Personnage import Personnage
 
 class Inventaire:
