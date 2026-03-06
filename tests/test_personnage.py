@@ -156,15 +156,14 @@ def personnage():
     p.vie = 60 # Blessé volontairement pour le test
     return p
 
-def test_soigner_normal(Personnage):
-    vie_avant = Personnage.vie
-    Personnage.soigner(25)
-    assert Personnage.vie == 85 #60 + 25 de soin
+def test_soigner_normal(personnage):
+    personnage.soigner(25)
+    assert personnage.vie == 85
 
-def test_soigner_overflow_cap_max(Personnage):
-    Personnage.vie = 100
-    Personnage.soigner(10)
-    assert Personnage.vie == 100
+def test_soigner_overflow_cap_max(personnage):
+    personnage.vie = 95
+    personnage.soigner(10)
+    assert personnage.vie == 100
 
 def test_soigner_valeur_zero():
     p = Personnage("Test",100,10)

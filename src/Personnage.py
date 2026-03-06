@@ -32,10 +32,14 @@ class Personnage(ABC):
         :param valeur: Quantité de dégâts à subir (int >0)
         Exemple: bombe.utiliser(self) appelle ça avec degats.
         """
-        self.vie -= valeur
+        if valeur <= 0 or not self.est_vivant():
+            return 0
+        perdu = min(self.vie, valeur)
+        self.vie -= perdu
         if self.vie <= 0:
-            self.vie = 0  # Pas de vie négative
-            self.estvivant = False  # Déclenche fin de combat?
+            self.vie = 0
+            self.estvivant = False
+        return perdu
 
     def calcul_degats_sur(self, cible) -> int:
         """
@@ -52,9 +56,12 @@ class Personnage(ABC):
         Effectue une attaque complète sur une cible.
         """
         if not self.estvivant:
-            return
-        degats = self.calcul_degats_sur_cible(cible)
+            return 0
+        if not cible.est_vivant():
+            return 0
+        degats = self.calcul_degats_sur(cible)
         cible.subir_degats(degats)
+        return degats
 
     def soigner(self, valeur: int):
         """
@@ -65,9 +72,8 @@ class Personnage(ABC):
         Cas limite: si vie == viemax, aucun effet (silencieux).
         """
         self.vie += valeur
-        if self.vie > self.viemax:
-            self.vie = self.viemax  
+        if self.vie > self.vie_max:
+            self.vie = self.vie_max
     
-    @abstractmethod
-    def donner_recompenses(self, hero: 'Hero'):
-        pass  # Implémenté dans Hero/Ennemi
+    def donner_recompenses(self):
+        return {}

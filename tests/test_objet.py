@@ -18,13 +18,11 @@ class FauxPersonnage(Personnage):
 # ----------------------
 def test_objet_init_attributs():
     class ObjetConcret(Objet):
-        """Petite sous-classe concrète pour tester l'init de Objet."""
         pass
 
     o = ObjetConcret("Épée rouillée", "Une vieille épée toute abîmée")
     assert o.nom == "Épée rouillée"
     assert o.description == "Une vieille épée toute abîmée"
-
 
 # ----------------------
 # Tests Consommable / PotionSoin
