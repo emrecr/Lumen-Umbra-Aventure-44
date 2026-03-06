@@ -47,7 +47,7 @@ class Hero(Personnage):
         Logique Hero: ne donne rien (pas de loots), ou partage inventaire ?
         Pour cohérence avec Ennemi (qui donne exp/objets).
         """
-        print(f"{self.initnom} n'a pas de récompenses à donner (pas d'ennemi).")
+        print(f"{self.nom} n'a pas de récompenses à donner (pas d'ennemi).")
         # Option: self.inventaire.partager(hero.inventaire) si besoin
 
     @staticmethod
@@ -75,9 +75,9 @@ class Hero(Personnage):
         pct_boost = self.uniform(1, 10) / 100
         boost = 1 + pct_boost
         
-        self.viemax = math.ceil(self.viemax * boost)  # vie_max → viemax (cohérent Personnage)
+        self.vie_max = math.ceil(self.vie_max * boost)  # vie_max → viemax (cohérent Personnage)
         self.force = math.ceil(self.force * boost)
-        self.vie = self.viemax  # Reset vie courante
+        self.vie = self.vie_max  # Reset vie courante
 
     def gagner_exp(self, exp: int) -> None:
         """
@@ -92,5 +92,5 @@ class Hero(Personnage):
         # Monte autant de niveaux que possible
         while self.exp >= self.exp_pour_prochain_niveau():
             self.monter_niveau()
-            print(f"{self.initnom} → Niveau {self.niveau} ! (XP restants: {self.exp})")
+            print(f"{self.nom} → Niveau {self.niveau} ! (XP restants: {self.exp})")
 
