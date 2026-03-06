@@ -8,7 +8,7 @@ Compatible tests pytest + documentation officielle.
 
 from .Personnage import Personnage  # Héritage ABC (doit implémenter donner_recompenses)
 from .Inventaire import Inventaire  # Diagramme: Hero possède Inventaire
-from .Objet import Equipement  # Pour arme/armure (bonusforce)
+from .objet import Equipement  # Pour arme/armure (bonusforce)
 import random
 import math
 
