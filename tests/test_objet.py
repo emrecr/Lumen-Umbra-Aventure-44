@@ -1,6 +1,6 @@
 import pytest
 
-from src.objet import objet, Consommable, PotionSoin, Bombe, Equipement
+from src.Objet import Objet, Consommable, PotionSoin, Bombe, Equipement
 from src.Personnage import Personnage
 
 
