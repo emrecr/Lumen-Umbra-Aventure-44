@@ -1,0 +1,104 @@
+{
+  "salle_depart": "entree",
+  "salles": {
+    "entree": {
+      "nom": "Entrée du donjon",
+      "description": "Une lourde porte de pierre s'est refermée derrière vous. L'air est humide et des torches vacillantes éclairent faiblement le couloir.",
+      "a_lit": false,
+      "objets": [
+        {"type": "PotionDeSoin", "nom": "Petite potion", "description": "Une fiole de liquide rosé.", "quantite": 25}
+      ],
+      "ennemis": [
+        {
+          "nom": "Gobelin éclaireur",
+          "vie_max": 30,
+          "force": 6,
+          "arme": {"nom": "Couteau rouillé", "description": "Une lame émoussée.", "bonus": 2},
+          "armure": {"nom": "Guenilles", "description": "Quelques chiffons cousus.", "bonus": 1},
+          "exp": 20,
+          "recompenses": [
+            {"type": "PotionDeSoin", "nom": "Petite potion", "description": "Récupérée sur le gobelin.", "quantite": 15, "qte": 1}
+          ]
+        }
+      ],
+      "sorties": {"nord": "couloir", "est": "reservoir"}
+    },
+    "couloir": {
+      "nom": "Couloir sombre",
+      "description": "Un long couloir aux murs couverts de mousse. Des os jonchent le sol.",
+      "a_lit": false,
+      "objets": [
+        {"type": "Bombe", "nom": "Bombe artisanale", "description": "Un engin de fortune qui explose.", "degats": 25}
+      ],
+      "ennemis": [
+        {
+          "nom": "Squelette guerrier",
+          "vie_max": 45,
+          "force": 10,
+          "arme": {"nom": "Épée ébréchée", "description": "Une vieille épée.", "bonus": 4},
+          "armure": {"nom": "Armure rouillée", "description": "Une vieille cotte de mailles.", "bonus": 3},
+          "exp": 35,
+          "recompenses": [
+            {"type": "Arme", "nom": "Épée ébréchée", "description": "Récupérée sur le squelette.", "bonus": 4, "qte": 1}
+          ]
+        }
+      ],
+      "sorties": {"sud": "entree", "nord": "salle_boss", "ouest": "chambre_repos"}
+    },
+    "reservoir": {
+      "nom": "Réservoir souterrain",
+      "description": "Une vaste salle inondée aux genoux. L'eau froide ralentit vos mouvements.",
+      "a_lit": false,
+      "objets": [
+        {"type": "PotionDeSoin", "nom": "Grande potion", "description": "Une grosse fiole de soin.", "quantite": 60},
+        {"type": "Armure", "nom": "Bouclier de bois", "description": "Un bouclier rudimentaire.", "bonus": 5}
+      ],
+      "ennemis": [
+        {
+          "nom": "Crocodile des cavernes",
+          "vie_max": 70,
+          "force": 14,
+          "arme": {},
+          "armure": {"nom": "Écailles épaisses", "description": "Une peau très résistante.", "bonus": 6},
+          "exp": 55,
+          "recompenses": []
+        }
+      ],
+      "sorties": {"ouest": "entree"}
+    },
+    "chambre_repos": {
+      "nom": "Chambre des gardes abandonnée",
+      "description": "Une pièce poussiéreuse avec un vieux lit de camp. Une odeur de rouille et de cuir flotte dans l'air.",
+      "a_lit": true,
+      "objets": [
+        {"type": "PotionDeSoin", "nom": "Potion de soin", "description": "Une potion standard.", "quantite": 40},
+        {"type": "Arme", "nom": "Dague affilée", "description": "Une dague bien entretenue.", "bonus": 6}
+      ],
+      "ennemis": [],
+      "sorties": {"est": "couloir"}
+    },
+    "salle_boss": {
+      "nom": "Trône du Seigneur des Ombres",
+      "description": "Une immense salle circulaire. Au centre, un être enchaîné d'ombres vous fixe depuis son trône de crânes.",
+      "a_lit": false,
+      "objets": [
+        {"type": "Armure", "nom": "Armure des ombres", "description": "Une armure forgée dans l'obscurité.", "bonus": 15},
+        {"type": "Arme", "nom": "Lame du néant", "description": "Une épée qui absorbe la lumière.", "bonus": 20}
+      ],
+      "ennemis": [
+        {
+          "nom": "Seigneur des Ombres",
+          "vie_max": 200,
+          "force": 30,
+          "arme": {"nom": "Sceptre maudit", "description": "Un sceptre qui brûle au toucher.", "bonus": 15},
+          "armure": {"nom": "Manteau d'ombres", "description": "Des ombres qui absorbent les coups.", "bonus": 10},
+          "exp": 500,
+          "recompenses": [
+            {"type": "PotionDeSoin", "nom": "Élixir de vie", "description": "Restaure énormément de PV.", "quantite": 200, "qte": 2}
+          ]
+        }
+      ],
+      "sorties": {"sud": "couloir"}
+    }
+  }
+}
