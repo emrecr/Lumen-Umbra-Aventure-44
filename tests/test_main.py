@@ -13,7 +13,7 @@ def deterministic_damage(monkeypatch):
     Rends le calcul des dégâts déterministe:
     Personnage.calcul_degats_sur() utilise uniform(), on force uniform()=1.0 -> multiplicateur = 1.0
     """
-    monkeypatch.setattr("src.Personnage.uniform", lambda a, b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a, b: 1.0)
 
 
 @pytest.fixture

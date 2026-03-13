@@ -66,21 +66,21 @@ def test_calcul_degats_sur_base_negative_donne_zero(monkeypatch, hero, mob):
     # Rendre la base <= 0 : armure cible > force+arme attaquant
     cible = Personnage("Tank", vie_max=50, force=1, arme=0, armure=999)
     # Fixer l'aléatoire au max pour vérifier que ça reste 0
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.9999999)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.9999999)
     assert hero.calcul_degats_sur(cible) == 0
 
 def test_calcul_degats_sur_mult_1_00(monkeypatch):
     # base = (6+2) - 1 = 7
     a = Personnage("A", 10, force=6, arme=2, armure=0)
     b = Personnage("B", 10, force=1, arme=0, armure=1)
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0)
     assert a.calcul_degats_sur(b) == 7
 
 def test_calcul_degats_sur_mult_proche_1_10(monkeypatch):
     # base = 10 ; mult ~ 1.0999999 = 11
     a = Personnage("A", 10, force=10, arme=0, armure=0)
     b = Personnage("B", 10, force=0, arme=0, armure=0)
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0999999)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0999999)
     assert a.calcul_degats_sur(b) == 11
 
 @pytest.mark.parametrize(
@@ -98,7 +98,7 @@ def test_calcul_degats_sur_dans_bornes(force, arme, armure_cible, monkeypatch):
 
     # Tester plusieurs valeurs pseudo-aléatoires
     for r in (1.0, 1.012, 1.05,1.087321):  # toutes dans [1.0,1.1)
-        monkeypatch.setattr("src.Personnage.uniform", lambda a,b: r)
+        monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: r)
         dmg = attaquant.calcul_degats_sur(cible)
         assert dmg >= 0
         assert base <= dmg <= math.ceil(base * 1.1)
@@ -109,7 +109,7 @@ def test_calcul_degats_sur_dans_bornes(force, arme, armure_cible, monkeypatch):
 # -------------
 def test_attaquer_applique_degats_et_retourne_valeur(monkeypatch, hero, mob):
     # Fixer mult = 1.0 pour rendre déterministe
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0)
     # base = (6+1) - 2 = 5 ; ceil(5 * 1.0) = 5
     inflige = hero.attaquer(mob)
     assert inflige == 5
@@ -118,7 +118,7 @@ def test_attaquer_applique_degats_et_retourne_valeur(monkeypatch, hero, mob):
 def test_attaquer_sur_cible_morte_retourne_zero(monkeypatch, hero, mob):
     mob.subir_degats(mob.vie_max)  # tuer la cible
     assert mob.est_vivant() is False
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0)
     avant = mob.vie
     inflige = hero.attaquer(mob)
     assert inflige == 0
@@ -127,7 +127,7 @@ def test_attaquer_sur_cible_morte_retourne_zero(monkeypatch, hero, mob):
 def test_attaquer_par_mort_retourne_zero(monkeypatch, hero, mob):
     hero.subir_degats(hero.vie_max)  # tuer l'attaquant
     assert hero.est_vivant() is False
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0)
     avant = mob.vie
     inflige = hero.attaquer(mob)
     assert inflige == 0
@@ -143,7 +143,7 @@ def test_degats_ne_peuvent_pas_etre_negatifs(monkeypatch):
     c = Personnage("C", 10, force=0, arme=0, armure=999)
     # même avec boost quelconque, résultat attendu = 0
     for r in (1.0, 1.42, 1.9999):
-        monkeypatch.setattr("src.Personnage.uniform", lambda a,b: r)
+        monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: r)
         assert a.calcul_degats_sur(c) == 0
 
 
@@ -185,7 +185,7 @@ def test_mini_combat_deterministe(monkeypatch):
     - A attaque B à nouveau -> 4 dégâts
     On vérifie seulement les effets cumulatifs.
     """
-    monkeypatch.setattr("src.Personnage.uniform", lambda a,b: 1.0)
+    monkeypatch.setattr("src.personnages.Personnage.uniform", lambda a,b: 1.0)
 
     A = Personnage("A", vie_max=12, force=3, arme=1, armure=0)  # base vs B = (3+1)-1 = 3 (car armure B=1)
     B = Personnage("B", vie_max=10, force=2, arme=0, armure=1)  # base vs A = (2+0)-0 = 2 (car armure A=0)

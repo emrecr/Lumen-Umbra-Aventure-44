@@ -6,9 +6,9 @@ Diagramme: Hero -> inventaire(Inventaire), expPourProchainNiveau, monterNiveau.
 Compatible tests pytest + documentation officielle.
 """
 
-from .Personnage import Personnage  # Héritage ABC (doit implémenter donner_recompenses)
-from .Inventaire import Inventaire  # Diagramme: Hero possède Inventaire
-from .objet import Equipement  # Pour arme/armure (bonusforce)
+from src.personnages.Personnage import Personnage  # Héritage ABC (doit implémenter donner_recompenses)
+from src.objets.inventaire.Inventaire import Inventaire  # Diagramme: Hero possède Inventaire
+from src.objets.objet import Equipement  # Pour arme/armure (bonusforce)
 import random
 import math
 

@@ -16,7 +16,7 @@ def test_exp_threshold_formula():
 
 def test_monter_niveau_avec_aleatoire_min(monkeypatch):
     # Fige l'aléatoire à +1% pour vérifier précisément les boosts et les effets de bord.
-    monkeypatch.setattr("src.Hero.uniform", lambda a, b: 1)
+    monkeypatch.setattr("src.personnages.Hero.uniform", lambda a, b: 1)
 
     h = HeroStub(vie_max=100, force=50)
     h.monter_niveau()
@@ -29,7 +29,7 @@ def test_monter_niveau_avec_aleatoire_min(monkeypatch):
     assert h.vie == h.vie_max
 
 def test_gagner_exp_cumulatif_un_seul_niveau(monkeypatch):
-    monkeypatch.setattr("src.Hero.uniform", lambda a, b: 10)
+    monkeypatch.setattr("src.personnages.Hero.uniform", lambda a, b: 10)
     h = HeroStub()
     seuil = h.exp_pour_prochain_niveau()  # 200 au niveau 1
 
@@ -48,7 +48,7 @@ def test_gagner_exp_cumulatif_un_seul_niveau(monkeypatch):
     assert h.exp < h.exp_pour_prochain_niveau()
 
 def test_gagner_exp_plusieurs_niveaux_en_chaine(monkeypatch):
-    monkeypatch.setattr("src.Hero.uniform", lambda a, b: 1)  # boosts minimaux, résultats déterministes
+    monkeypatch.setattr("src.personnages.Hero.uniform", lambda a, b: 1)  # boosts minimaux, résultats déterministes
     h = HeroStub(vie_max=10, force=5)
 
     h.gagner_exp(5000)

@@ -1,6 +1,6 @@
 from typing import Dict, List
-from src.objet import Objet, Consommable
-from src.Personnage import Personnage
+from src.objets.objet import Objet, Consommable
+from src.personnages.Personnage import Personnage
 
 class Inventaire:
     def __init__(self):

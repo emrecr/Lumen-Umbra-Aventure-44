@@ -1,7 +1,7 @@
 from random import seed
-from src.Hero import Hero
-from src.Ennemi import Ennemi
-from src.Personnage import Personnage
+from src.personnages.Hero import Hero
+from src.personnages.Ennemi import Ennemi
+from src.personnages.Personnage import Personnage
 
 def combat_tour_par_tour(joueur: Hero, ennemi: Ennemi, log: bool = True) -> Personnage:
     """
