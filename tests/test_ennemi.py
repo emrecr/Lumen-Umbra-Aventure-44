@@ -115,7 +115,7 @@ def test_decision_action_faible_favorise_fuite(monkeypatch):
     """Quand vie < 20 %, random.random() < 0.7 → fuit."""
     e = Ennemi("Gobelin faible", vie_max=100, force=5)
     e.vie = 15  # 15 % → mode fuite
-    monkeypatch.setattr("src.Ennemi.random.random", lambda: 0.5)  # < 0.7
+    monkeypatch.setattr("src.personnages.Ennemi.random.random", lambda: 0.5)  # < 0.7
     assert e.decision_action() == "fuit"
 
 
@@ -123,5 +123,5 @@ def test_decision_action_fort_attaque(monkeypatch):
     """Quand vie >= 20 % et random < 0.8 → attaque."""
     e = Ennemi("Orc fort", vie_max=100, force=10)
     e.vie = 80  # 80 % → mode normal
-    monkeypatch.setattr("src.Ennemi.random.random", lambda: 0.5)  # < 0.8
+    monkeypatch.setattr("src.personnages.Ennemi.random.random", lambda: 0.5)  # < 0.8
     assert e.decision_action() == "attaque"
