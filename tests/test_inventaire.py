@@ -1,6 +1,6 @@
 import pytest
-from src.Hero import Hero
-from src.objet import PotionSoin
+from src.personnages.Hero import Hero
+from src.objets.objet import PotionSoin
 
 def test_ajouter_objet_inventaire():
     """Vérifie l'ajout d'objets (Cahier des charges p.1)"""

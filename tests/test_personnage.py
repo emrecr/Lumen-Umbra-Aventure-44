@@ -1,7 +1,7 @@
 import math
 import pytest
 
-from src.Personnage import Personnage
+from src.personnages.Personnage import Personnage
 
 
 # ---------

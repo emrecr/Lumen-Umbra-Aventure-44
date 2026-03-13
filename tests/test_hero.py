@@ -1,4 +1,4 @@
-from src.Hero import Hero
+from src.personnages.Hero import Hero
 
 
 class HeroStub(Hero):

@@ -1,8 +1,8 @@
 # tests/test_combat.py
 import pytest
 
-from src.Hero import Hero
-from src.Ennemi import Ennemi
+from src.personnages.Hero import Hero
+from src.personnages.Ennemi import Ennemi
 from src.main import combat_tour_par_tour
 
 # --- Fixtures utilitaires -----------------------------------------------------
