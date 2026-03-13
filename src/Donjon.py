@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 import json
 from typing import List, Optional
@@ -95,3 +94,59 @@ class Donjon:
         self.catalogue_salles: List[Salle] = []
         self._salle_depart_id: str = ""
         self._index: dict = {}
+    def charger_depuis_fichier(self, chemin: str) -> None:
+        """Charge le donjon depuis un fichier JSON.
+
+        Args:
+            chemin (str): Chemin vers le fichier JSON.
+
+        Raises:
+            FileNotFoundError: Si le fichier n'existe pas.
+            json.JSONDecodeError: Si le JSON est mal formé.
+        """
+        with open(chemin, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        self._salle_depart_id = data["salle_depart"]
+        salles_data = data["salles"]
+
+        # Première passe : créer toutes les salles
+        for identifiant, salle_data in salles_data.items():
+            salle = Salle(
+                nom=salle_data["nom"],
+                description=salle_data["description"],
+                a_lit=salle_data.get("a_lit", False),
+            )
+            for obj_data in salle_data.get("objets", []):
+                try:
+                    salle.objets.append(_creer_objet(obj_data))
+                except (ValueError, KeyError):
+                    pass
+            for ennemi_data in salle_data.get("ennemis", []):
+                salle.ennemis.append(_creer_ennemi(ennemi_data))
+
+            self._index[identifiant] = salle
+            self.catalogue_salles.append(salle)
+
+        # Deuxième passe : relier les sorties
+        for identifiant, salle_data in salles_data.items():
+            salle_source = self._index[identifiant]
+            for direction, id_dest in salle_data.get("sorties", {}).items():
+                if id_dest in self._index:
+                    salle_source.ajouter_sortie(direction, self._index[id_dest])
+
+    def generer_entree(self) -> Salle:
+        """Retourne la salle de départ du donjon.
+
+        Returns:
+            Salle: La salle initiale.
+
+        Raises:
+            ValueError: Si le donjon n'a pas encore été chargé.
+        """
+        if self._salle_depart_id not in self._index:
+            raise ValueError("Donjon vide ou non chargé.")
+        return self._index[self._salle_depart_id]
+
+    def __repr__(self) -> str:
+        return f"Donjon({len(self.catalogue_salles)} salle(s))"
