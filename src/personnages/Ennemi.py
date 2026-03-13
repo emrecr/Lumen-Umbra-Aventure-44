@@ -33,6 +33,22 @@ class Ennemi(Personnage):
         """
         super().__init__(nom, vie_max, force, arme, armure)  # Passe arme/armure à Personnage
         self.exp = exp
+        self.recompenses: dict = {}  # {Objet: quantité} à donner au héros en cas de victoire
+
+    def donner_recompenses(self, hero) -> None:
+        """Transfère les récompenses de l'ennemi vaincu dans l'inventaire du héros.
+
+        N'a d'effet que si l'ennemi est mort. Vide ensuite le dictionnaire
+        de récompenses pour éviter les doublons.
+
+        Args:
+            hero (Hero): Héros qui reçoit les récompenses.
+        """
+        if self.est_vivant():
+            return
+        for objet, quantite in self.recompenses.items():
+            hero.inventaire.ajouter_objet(objet, quantite)
+        self.recompenses = {}
 
     def decision_action(self) -> str:
         """
