@@ -1,12 +1,3 @@
-"""
-Module interface.py
-===================
-Couche UI (Vue + Contrôleur) — architecture MVC.
-
-Tout ce qui touche à print() et input() est ICI uniquement.
-La logique du jeu reste dans les classes Action, Hero, Ennemi, Salle, Donjon.
-"""
-
 from __future__ import annotations
 from typing import List, Optional
 
@@ -19,7 +10,6 @@ from src.actions.action import (
     Action, Observer, SeDeplacer, Attaquer,
     Ramasser, SeReposer, Fuir, Utiliser,
 )
-
 
 # ---------------------------------------------------------------------------
 # Affichage
@@ -271,3 +261,9 @@ def demarrer_jeu(chemin_donjon: str = "donjon.json") -> None:
     else:
         print(f"{hero.nom} est tombé au combat. Game Over.")
     print("═" * 50)
+ 
+ 
+if __name__ == "__main__":
+    import os
+    chemin = os.path.join(os.path.dirname(__file__), "..", "..", "donjon.json")
+    demarrer_jeu(chemin)
